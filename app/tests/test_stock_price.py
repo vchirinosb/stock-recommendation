@@ -30,7 +30,7 @@ class TestStockEndpoint:
         # Mock the yfinance Ticker object's history method to return the
         # fixture data
         with patch.object(yf.Ticker, 'history', return_value=stock_data):
-            response = client.get("/stocks/AAPL")
+            response = client.get("/api/v1/stock-price/AAPL")
 
         assert response.status_code == 200
         assert "2023-08-01" in response.text
