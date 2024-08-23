@@ -1,22 +1,50 @@
-import langchain
 import requests
 from langchain.agents import initialize_agent
 from langchain_community.tools import DuckDuckGoSearchRun
 from langchain_core.tools import Tool
 
+from app.core.config import settings
+
 
 def call_get_stock_price(ticker):
-    url = f"http://localhost:8000/stock-price/{ticker}"
+    """
+    Obtener el precio histórico de un ticker.
+
+    Args:
+        ticker (str): Ticker a consultar.
+
+    Returns:
+        str: Response con los datos del precio histórico del ticker.
+    """
+    url = f"{settings.base_url}/stock-price/{ticker}"
     response = requests.get(url)
     return response.text
 
 def call_get_financial_statements(ticker):
-    url = f"http://localhost:8000/financial-statement/{ticker}"
+    """
+    Obtener los estados financieros de un ticker.
+
+    Args:
+        ticker (str): Ticker a consultar.
+
+    Returns:
+        str: Response con los estados financieros del ticker.
+    """
+    url = f"{settings.base_url}/financial-statement/{ticker}"
     response = requests.get(url)
     return response.text
 
 def call_get_recent_stock_news(company_name):
-    url = f"http://localhost:8000/recent-news/{company_name}"
+    """
+    Obtener las noticias más recientes relacionadas con una empresa.
+
+    Args:
+        company_name (str): Nombre de la empresa a consultar.
+
+    Returns:
+        str: Response con las noticias más recientes sobre la empresa.
+    """
+    url = f"{settings.base_url}/recent-news/{company_name}"
     response = requests.get(url)
     return response.text
 
