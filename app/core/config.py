@@ -1,4 +1,5 @@
-from pydantic import BaseSettings
+from pydantic import Field
+from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
@@ -10,9 +11,10 @@ class Settings(BaseSettings):
         base_url (str): URL base de API.
     """
 
-    base_url: str
+    base_url: str = Field(..., description="URL base de la API")
 
     class Config:
         env_file = ".env"
+
 
 settings = Settings()

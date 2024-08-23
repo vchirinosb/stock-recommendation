@@ -51,8 +51,8 @@ def get_financial_statements(ticker: str):
     Si el símbolo bursátil contiene un punto (.), se tomará solo la primera
     parte antes del punto.
 
-    El balance general obtenido estará limitado a tres columnas (si es que tiene
-    más de tres), y se eliminarán las filas con valores nulos.
+    El balance general obtenido estará limitado a tres columnas (si es que
+    tiene más de tres), y se eliminarán las filas con valores nulos.
 
     Args:
     - ticker (str): El símbolo bursátil de la empresa.
@@ -107,8 +107,8 @@ def get_recent_stock_news(company_name):
 
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
-                      'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 '
-                      'Safari/537.36'
+                      'AppleWebKit/537.36 (KHTML, like Gecko) '
+                      'Chrome/102.0.0.0 Safari/537.36'
     }
     g_query = google_query(company_name)
 

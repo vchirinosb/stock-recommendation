@@ -9,6 +9,7 @@ from app.main import app
 
 client = TestClient(app)
 
+
 class TestStockEndpoint:
 
     @pytest.fixture

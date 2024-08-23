@@ -6,3 +6,5 @@ langchain==0.2.14
 langchain_community==0.2.12
 python-dotenv==1.0.1
 pydantic==2.8.2
+ pydantic-settings==2.4.0
+ollama==0.3.1
