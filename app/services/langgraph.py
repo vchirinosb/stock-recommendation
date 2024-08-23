@@ -130,11 +130,11 @@ zero_shot_agent = create_react_agent(
 )
 
 
-if __name__ == "__main__":
-    user_input = "APPL"
+#if __name__ == "__main__":
+#    user_input = "APPL"
 
-    try:
-        response = zero_shot_agent.invoke({"input": user_input, "intermediate_steps": []})
-        print(response)
-    except Exception as e:
-        print(f"Error running the agent: {e}")
+#    try:
+#        response = zero_shot_agent.invoke({"input": user_input, "intermediate_steps": []})
+#        print(response)
+#    except Exception as e:
+#        print(f"Error running the agent: {e}")
