@@ -24,6 +24,11 @@ def call_get_stock_price(ticker):
     """
     url = f"{settings.base_url}/stock-price/{ticker}"
     response = requests.get(url)
+
+    print("-------------------")
+    print("call_get_stock_price: ", response.text)
+    print("-------------------")
+
     return response.text
 
 
@@ -39,6 +44,11 @@ def call_get_financial_statements(ticker):
     """
     url = f"{settings.base_url}/financial-statement/{ticker}"
     response = requests.get(url)
+
+    print("-------------------")
+    print("call_get_financial_statements: ", response.text)
+    print("-------------------")
+
     return response.text
 
 
@@ -54,6 +64,11 @@ def call_get_recent_stock_news(company_name):
     """
     url = f"{settings.base_url}/recent-news/{company_name}"
     response = requests.get(url)
+
+    print("-------------------")
+    print("call_get_recent_stock_news: ", response.text)
+    print("-------------------")
+
     return response.text
 
 
@@ -130,11 +145,16 @@ zero_shot_agent = create_react_agent(
 )
 
 
-#if __name__ == "__main__":
-#    user_input = "APPL"
+if __name__ == "__main__":
+    user_input = "APPL"
 
-#    try:
-#        response = zero_shot_agent.invoke({"input": user_input, "intermediate_steps": []})
-#        print(response)
-#    except Exception as e:
-#        print(f"Error running the agent: {e}")
+    try:
+        response = zero_shot_agent.invoke(
+            {
+                "input": user_input, "intermediate_steps": []
+            }
+        )
+        print("***** Response: ")
+        print(response)
+    except Exception as e:
+        print(f"Error running the agent: {e}")
