@@ -100,35 +100,36 @@ tools = [
 stock_prompt = """
     You are a financial advisor. Give stock recommendations for given query.
     Everytime first you should identify the company name and get the stock ticker symbol for the stock.
-    Answer the following questions as best you can. You have access to the following tools:
+    Answer the following questions as best you can.
 
-    {tools}
-
-    {tool_names}
-
-    steps-
-    Note- if you fail in satisfying any of the step below, Just move to next one
+    Steps:
+    Note - if you fail in satisfying any of the step below, Just move to next one
     1) Get the company name and search for the "company name + stock ticker" on internet. Dont hallucinate extract stock ticker as it is from the text. Output- stock ticker. If stock ticker is not found, stop the process and output this text: This stock does not exist
     2) Use "Get Stock Historical Price" tool to gather stock info. Output- Stock data
     3) Get company's historic financial data using "Get Financial Statements". Output- Financial statement
     4) Use this "Get Recent News" tool to search for latest stock related news. Output- Stock news
     5) Analyze the stock based on gathered data and give detailed analysis for investment choice. provide numbers and reasons to justify your answer. Output- Give a single answer if the user should buy,hold or sell. You should Start the answer with Either Buy, Hold, or Sell in Bold after that Justify.
 
-    Use the following format:
-
-    Question: the input question you must answer
-    Thought: you should always think about what to do, Also try to follow steps mentioned above
-    Action: the action to take, should be one of [Get Stock Historical Price, Stock Ticker Search, Get Recent News, Get Financial Statements]
-    Action Input: the input to the action
-    Observation: the result of the action
-    ... (this Thought/Action/Action Input/Observation can repeat N times, if Thought is empty go to the next Thought and skip Action/Action Input and Observation)
-    Thought: I now know the final answer
-    Final Answer: the final answer to the original input question
-    Begin!
-
-    Question: {input}
-    Thought:{agent_scratchpad}
+    Write your findings into a final response to the user using Markdown formatting.
 """
+
+# Use the following format:
+
+# Question: the input question you must answer
+# Thought: you should always think about what to do, Also try to follow steps mentioned above
+# Action: the action to take, should be one of [Get Stock Historical Price, Stock Ticker Search, Get Recent News, Get Financial Statements]
+# Action Input: the input to the action
+# Observation: the result of the action
+# ... (this Thought/Action/Action Input/Observation can repeat N times, if Thought is empty go to the next Thought and skip Action/Action Input and Observation)
+# Thought: I now know the final answer
+# Final Answer: the final answer to the original input question
+# Begin!
+
+# You have access to the following tools:
+# {tools}
+# {tool_names}
+# Question: {input}
+# Thought:{agent_scratchpad}
 
 tool_names = ", ".join([tool.name for tool in tools])
 prompt_template = PromptTemplate(
@@ -144,7 +145,7 @@ zero_shot_agent = create_react_agent(
     tools=tools,
 )
 
-def get_stock_recommendation(user_input: str) -> dict:
+def get_stock_recommendation(user_input: str):
     """
     Obtener la recomendación de stock basado en el input del usuario.
 
@@ -161,7 +162,7 @@ def get_stock_recommendation(user_input: str) -> dict:
                 "intermediate_steps": []
             }
         )
-        return {"response": response}
+        return response
     except Exception as e:
         return {"error": str(e)}
 
