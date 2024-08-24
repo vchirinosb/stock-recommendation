@@ -1,7 +1,14 @@
+import os
+
 import requests
 
 import streamlit as st
-# from app.core.config import settings
+from dotenv import load_dotenv
+
+load_dotenv()
+
+
+BASE_URL = os.getenv("BASE_URL", "http://localhost:8000")
 
 st.title("Stock Recommendation Agent")
 
@@ -11,7 +18,7 @@ user_input = st.text_input("Enter Stock Ticker", "AAPL")
 if st.button("Get Stock Recommendation"):
     try:
 
-        url = "http://localhost:8000/get-recommendation"
+        url = f"BASE_URL/get-recommendation"
         payload = {"user_input": user_input}
         response = requests.post(url, json=payload)
 
