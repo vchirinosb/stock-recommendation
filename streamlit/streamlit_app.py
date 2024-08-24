@@ -18,7 +18,7 @@ user_input = st.text_input("Enter Stock Ticker", "AAPL")
 if st.button("Get Stock Recommendation"):
     try:
 
-        url = f"BASE_URL/get-recommendation"
+        url = f"{BASE_URL}/get-recommendation"
         payload = {"user_input": user_input}
         response = requests.post(url, json=payload)
 
