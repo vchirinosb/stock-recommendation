@@ -144,17 +144,33 @@ zero_shot_agent = create_react_agent(
     tools=tools,
 )
 
+def get_stock_recommendation(user_input: str) -> dict:
+    """
+    Obtener la recomendación de stock basado en el input del usuario.
+
+    Args:
+        user_input (str): Stock ticker o query.
+
+    Returns:
+        dict: Response desde el agente.
+    """
+    try:
+        response = zero_shot_agent.invoke(
+            {
+                "input": user_input,
+                "intermediate_steps": []
+            }
+        )
+        return {"response": response}
+    except Exception as e:
+        return {"error": str(e)}
+
 
 if __name__ == "__main__":
     user_input = "APPL"
 
     try:
-        response = zero_shot_agent.invoke(
-            {
-                "input": user_input, "intermediate_steps": []
-            }
-        )
-        print("***** Response: ")
+        response = get_stock_recommendation(user_input)
         print(response)
     except Exception as e:
         print(f"Error running the agent: {e}")

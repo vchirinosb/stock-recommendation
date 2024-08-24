@@ -1,9 +1,9 @@
 import os
 
 import requests
+from dotenv import load_dotenv
 
 import streamlit as st
-from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -18,7 +18,7 @@ user_input = st.text_input("Enter Stock Ticker", "AAPL")
 if st.button("Get Stock Recommendation"):
     try:
 
-        url = f"{BASE_URL}/get-recommendation"
+        url = f"{BASE_URL}/get-chat"
         payload = {"user_input": user_input}
         response = requests.post(url, json=payload)
 
