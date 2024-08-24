@@ -2,7 +2,6 @@ from api.v1.endpoints.stocks import router as stocks_router
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-from app.services.langgraph import zero_shot_agent
 
 app = FastAPI()
 
@@ -22,10 +21,11 @@ def read_root():
 async def get_stock_recommendation(request: StockRequest):
     try:
         # Call the zero_shot_agent from langgraph.py and return the response
-        response = zero_shot_agent.invoke({
-            "input": request.user_input,
-            "intermediate_steps": []
-        })
-        return {"response": response}
+        # response = zero_shot_agent.invoke({
+        #    "input": request.user_input,
+        #    "intermediate_steps": []
+        # })
+        # return {"response": response}
+        return {"response": ""}
     except Exception as e:
         return {"error": str(e)}

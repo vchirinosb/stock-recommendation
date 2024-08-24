@@ -1,7 +1,7 @@
 import requests
 
 import streamlit as st
-from app.core.config import settings
+# from app.core.config import settings
 
 st.title("Stock Recommendation Agent")
 
@@ -11,7 +11,7 @@ user_input = st.text_input("Enter Stock Ticker", "AAPL")
 if st.button("Get Stock Recommendation"):
     try:
 
-        url = f"{settings.base_url}/get-recommendation"
+        url = "http://localhost:8000/get-recommendation"
         payload = {"user_input": user_input}
         response = requests.post(url, json=payload)
 
