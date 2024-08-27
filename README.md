@@ -1,8 +1,12 @@
 # Requerimientos para Proyecto de Software de Inteligencia Artificial
 
+(En progreso)
+
 ## **1. Prototipo**
 
-Crear un agente que reciba un stock, obtenga su información actual e histórica de los últimos 30 dias, obtenga las balances financieros y noticias relacionadas. La información procesada brindará como output la recomendación en relación al stock si comprar, vender, o mantener "On hold" con su respectiva justificación.
+Crear un agente que reciba un stock, obtenga su información actual e histórica del último año, balances financieros y noticias relacionadas.
+
+La información procesada brindará como output la recomendación en relación al stock si comprar, vender, o mantener "On hold" con su respectiva justificación.
 
 ## **1. Resumen del Proyecto**
 - **Nombre del Proyecto:**
