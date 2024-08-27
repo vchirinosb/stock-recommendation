@@ -1,12 +1,14 @@
-from app.api.v1.endpoints.stocks import router as stocks_router
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
-from app.services.langgraph import get_stock_recommendation
+from app.api.routes import stocks
+from app.api.v1.endpoints.stocks import router as stocks_router
+from app.workflow.agent_workflow import get_stock_recommendation
 
 app = FastAPI()
 
 app.include_router(stocks_router, prefix="/api/v1")
+app.include_router(stocks.router, prefix="/stocks")
 
 
 class StockRequest(BaseModel):

@@ -12,22 +12,15 @@ BASE_URL = os.getenv("BASE_URL", "http://localhost:8000")
 CHAT_URL = f"{BASE_URL}/get-chat"
 
 
-def chat(user_input) -> (str | None):
+def chat(user_input: str):
     user_input = f"Is {user_input} a good investment choice right now?"
     payload = {"user_input": user_input}
-    agent_response = requests.post(
-            CHAT_URL,
-            json=payload
-        ).json()
-    status = agent_response.status_code
-    if status == 200:
-        final_response = agent_response
-        return str(final_response)
-    else:
-        print(f"Error running the agent {status}")
-        print(f"Response: {agent_response}")
-        return None
+    response = requests.post(
+        CHAT_URL,
+        json=payload
+    )
 
+    return response
 
 st.title("Stock Recommendation Agent")
 user_input = st.text_input("Enter Stock Ticker", "AAPL")
