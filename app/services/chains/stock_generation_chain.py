@@ -48,6 +48,7 @@ agent_runnable = create_react_agent(
     tools=tools,
 )
 
+
 def execute_tools(state):
     print(f"State before execute_tools: {state}")
     messages = [state.get("agent_outcome", "No outcome")]
