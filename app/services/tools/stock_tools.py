@@ -21,6 +21,7 @@ def call_duck_search(query):
     """
     return DuckDuckGoSearchRun().run(query)
 
+
 @tool
 def call_get_stock_price(ticker):
     """
@@ -36,6 +37,7 @@ def call_get_stock_price(ticker):
     response = requests.get(url)
     return response.text
 
+
 @tool
 def call_get_financial_statements(ticker):
     """
@@ -50,6 +52,7 @@ def call_get_financial_statements(ticker):
     url = f"{settings.base_url}/financial-statement/{ticker}"
     response = requests.get(url)
     return response.text
+
 
 @tool
 def call_get_recent_stock_news(company_name):
@@ -73,4 +76,3 @@ tools = [
     call_get_financial_statements,
     call_get_recent_stock_news,
 ]
-

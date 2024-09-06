@@ -13,6 +13,7 @@ from app.schemas.agent_state import AgentState
 
 model = ChatOllama(model='llama3.1:8b')
 
+
 @tool
 def call_duck_search(query):
     """
@@ -29,6 +30,7 @@ def call_duck_search(query):
     """
     return DuckDuckGoSearchRun().run(query)
 
+
 @tool
 def call_get_stock_price(ticker):
     """
@@ -44,6 +46,7 @@ def call_get_stock_price(ticker):
     response = requests.get(url)
     return response.text
 
+
 @tool
 def call_get_financial_statements(ticker):
     """
@@ -58,6 +61,7 @@ def call_get_financial_statements(ticker):
     url = f"{settings.base_url}/financial-statement/{ticker}"
     response = requests.get(url)
     return response.text
+
 
 @tool
 def call_get_recent_stock_news(company_name):
@@ -118,6 +122,7 @@ agent_runnable = create_react_agent(
     prompt=prompt_template,
     tools=tools,
 )
+
 
 def execute_tools(state):
     print("Called `execute_tools`")

@@ -17,3 +17,4 @@ langchain-core==0.2.34
 langgraph==0.2.14
 streamlit==1.37.1
 watchdog==4.0.2
+redis==5.0.8
