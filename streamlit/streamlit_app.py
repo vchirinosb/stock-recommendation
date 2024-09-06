@@ -22,6 +22,7 @@ def chat(user_input: str):
 
     return response
 
+
 st.title("Stock Recommendation Agent")
 user_input = st.text_input("Enter Stock Ticker", "AAPL")
 
