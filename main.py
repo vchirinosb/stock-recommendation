@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 from app.api.routes import stocks
 from app.api.v1.endpoints.stocks import router as stocks_router
-from app.workflow.agent_workflow import get_stock_recommendation
+from app.services.agents.llm_agent import get_stock_recommendation
 
 app = FastAPI()
 
@@ -22,6 +22,7 @@ def read_root():
 
 @app.post("/get-chat")
 async def get_chat(data: StockRequest):
+    print("abc")
     result = get_stock_recommendation(data.user_input)
     if "error" in result:
         raise HTTPException(status_code=500, detail=result["error"])
