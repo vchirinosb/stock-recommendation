@@ -15,23 +15,31 @@ tool_executor = ToolExecutor(tools)
 
 # Define prompt template
 stock_prompt = """
-    You are a financial advisor. Give stock recommendations for the given query.
-    Answer the following questions as best you can using the following tools:
+    You are a financial advisor tasked with providing stock recommendations based on the following query. Use the available tools to guide your analysis.
 
-    {tools}
+    Tools available: {tools}
 
-    {tool_names}
+    ### Steps:
+    Follow these steps in order, and if any step fails, proceed to the next:
 
-    Steps:
-    1) Identify the company name and find the stock ticker. Output the ticker or "This stock does not exist".
-    2) Use "Get Stock Historical Price" tool to gather stock info. Output stock data.
-    3) Retrieve the company's financial data using "Get Financial Statements". Output financial statement.
-    4) Use "Get Recent News" to get the latest stock-related news. Output stock news.
-    5) Analyze the stock and provide a recommendation (Buy, Hold, Sell) with justification.
+    1. **Identify** the company name and retrieve the stock ticker. If no ticker is found, return "This stock does not exist."
+    2. **Fetch** historical stock prices using the "Get Stock Historical Price" tool.
+    3. **Obtain** the company's financial statements via the "Get Financial Statements" tool.
+    4. **Retrieve** the latest stock-related news using the "Get Recent News" tool.
+    5. **Analyze** all data and provide a recommendation (Buy, Hold, Sell) with a clear justification.
 
-    Format:
+    ### Response Format:
     Question: {input}
     Thought: {agent_scratchpad}
+    Thought: Reflect on the necessary action, following the steps above.
+    Action: Select a tool from {tool_names}
+    Action Input: Specify the input for the selected action
+    Observation: Provide the result of the action (DO NOT include any code)
+
+    (Repeat the Thought/Action/Observation cycle as needed)
+
+    Thought: I have the final answer
+    Final Answer: Provide your conclusion and recommendation
 """
 
 tool_names = ", ".join([tool.name for tool in tools])
@@ -51,25 +59,43 @@ agent_runnable = create_react_agent(
 
 def execute_tools(state):
     print(f"State before execute_tools: {state}")
-    messages = [state.get("agent_outcome", "No outcome")]
+
+    # Extract the last message from state['messages']
+    messages = state.get("messages", [])
+
+    if not messages:
+        return {"detail": "500: No messages found to execute tools."}
+
+    # Get the last message (assuming it's an AIMessage-like object)
     last_message = messages[-1]
+
+    # Accessing tool name directly, assuming 'last_message' has a 'tool' attribute
+    if not hasattr(last_message, 'tool'):
+        return {"detail": "500: No tool specified in the last message."}
 
     tool_name = last_message.tool
 
-    print(f"Calling tool: {tool_name}")
-
+    # Perform the tool invocation
     action = ToolInvocation(
         tool=tool_name,
-        tool_input=last_message.tool_input,
+        tool_input=last_message.tool_input  # Accessing tool_input directly
     )
     response = tool_executor.invoke(action)
 
+    # Append the result (observation) to the intermediate steps
     intermediate_steps = state.get("intermediate_steps", [])
     intermediate_steps.append((last_message, response))
 
-    print(f"State after execute_tools: {state}")
+    # Append the observation message (adjust according to actual message structure)
+    messages.append({
+        "role": "tool",  # Assuming this is a tool's response
+        "content": f"Observation: {response}"
+    })
 
-    return {"intermediate_steps": intermediate_steps}
+    # Return updated state
+    return {"intermediate_steps": intermediate_steps, "messages": messages}
+
+
 
 
 def run_agent(state):
@@ -80,13 +106,27 @@ def run_agent(state):
     if "input" not in state:
         state["input"] = ""  # Initialize if missing
 
+    # Ensure we have a 'messages' key to store the agent output
+    if "messages" not in state:
+        state["messages"] = []
+
+    # Run the agent and get the outcome
     agent_outcome = agent_runnable.invoke(state)
+
+    # Ensure agent_outcome is an AIMessage-like object and add it to 'messages'
+    state["messages"].append({
+        "role": "assistant",  # Assuming this is the assistant's response
+        "content": f"Action: {agent_outcome.tool}\nAction Input: {agent_outcome.tool_input}\n{agent_outcome.log}"
+    })
+
     return {
         "agent_outcome": agent_outcome,
         "intermediate_steps": state["intermediate_steps"],
         "agent_scratchpad": state["agent_scratchpad"],
-        "input": state["input"]
+        "input": state["input"],
+        "messages": state["messages"],  # Ensure messages are passed along
     }
+
 
 
 def should_continue(state):

@@ -4,71 +4,77 @@ from langchain_core.tools import tool
 
 from app.core.config import settings
 
-
 @tool
-def call_duck_search(query):
+def call_duck_search(query: str) -> str:
     """
-    Stock Ticker Search.
-    Use only when you need to get stock ticker from internet, you can also get
-    recent stock related news. Don't use it for any other analysis or task.
+    Search for stock ticker and recent stock-related news using DuckDuckGo.
 
     Args:
-        query (str): query.
+        query (str): Search query to find the stock ticker or news.
 
     Returns:
-        str: Response with the ticker
-
+        str: Response with the ticker or related news.
     """
-    return DuckDuckGoSearchRun().run(query)
-
+    search = DuckDuckGoSearchRun()
+    response = search.run(query)
+    return response
 
 @tool
-def call_get_stock_price(ticker):
+def call_get_stock_price(ticker: str) -> str:
     """
-    Obtener el precio histórico de un ticker.
+    Get historical price data for a given stock ticker.
 
     Args:
-        ticker (str): Ticker a consultar.
+        ticker (str): Stock ticker symbol.
 
     Returns:
-        str: Response con los datos del precio histórico del ticker.
+        str: Response with historical price data.
     """
     url = f"{settings.base_url}/stock-price/{ticker}"
-    response = requests.get(url)
-    return response.text
-
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        return response.text
+    except requests.RequestException as e:
+        return f"Error fetching stock price: {str(e)}"
 
 @tool
-def call_get_financial_statements(ticker):
+def call_get_financial_statements(ticker: str) -> str:
     """
-    Obtener los estados financieros de un ticker.
+    Get financial statements for a given stock ticker.
 
     Args:
-        ticker (str): Ticker a consultar.
+        ticker (str): Stock ticker symbol.
 
     Returns:
-        str: Response con los estados financieros del ticker.
+        str: Response with financial statements.
     """
     url = f"{settings.base_url}/financial-statement/{ticker}"
-    response = requests.get(url)
-    return response.text
-
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        return response.text
+    except requests.RequestException as e:
+        return f"Error fetching financial statements: {str(e)}"
 
 @tool
-def call_get_recent_stock_news(company_name):
+def call_get_recent_stock_news(company_name: str) -> str:
     """
-    Obtener las noticias más recientes relacionadas con una empresa.
+    Get the most recent news related to a company.
 
     Args:
-        company_name (str): Nombre de la empresa a consultar.
+        company_name (str): Name of the company.
 
     Returns:
-        str: Response con las noticias más recientes sobre la empresa.
+        str: Response with recent news about the company.
     """
     url = f"{settings.base_url}/recent-news/{company_name}"
-    response = requests.get(url)
-    return response.text
-
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        return response.text
+    except requests.RequestException as e:
+        return f"Error fetching recent news: {str(e)}"
 
 tools = [
     call_duck_search,
