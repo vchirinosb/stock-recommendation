@@ -1,3 +1,5 @@
+import logging
+
 from langchain.agents import create_react_agent
 from langchain_community.chat_models import ChatOllama
 from langchain_core.prompts import PromptTemplate
@@ -8,9 +10,9 @@ from langgraph.prebuilt.chat_agent_executor import AgentState
 
 from app.services.tools.stock_tools import tools
 
+logging.basicConfig(level=logging.INFO)
+
 model = ChatOllama(model='llama3.1:8b')
-
-
 tool_executor = ToolExecutor(tools)
 
 # Define prompt template
@@ -57,6 +59,11 @@ agent_runnable = create_react_agent(
 )
 
 
+class ToolExecutionError(Exception):
+    """Custom exception for tool execution errors."""
+    pass
+
+
 def execute_tools(state):
     print(f"State before execute_tools: {state}")
 
@@ -64,14 +71,14 @@ def execute_tools(state):
     messages = state.get("messages", [])
 
     if not messages:
-        return {"detail": "500: No messages found to execute tools."}
+        raise ToolExecutionError("No messages found to execute tools.")
 
     # Get the last message (assuming it's an AIMessage-like object)
     last_message = messages[-1]
 
     # Accessing tool name directly, assuming 'last_message' has a 'tool' attribute
     if not hasattr(last_message, 'tool'):
-        return {"detail": "500: No tool specified in the last message."}
+        raise ToolExecutionError("No tool specified in the last message.")
 
     tool_name = last_message.tool
 
@@ -94,8 +101,6 @@ def execute_tools(state):
 
     # Return updated state
     return {"intermediate_steps": intermediate_steps, "messages": messages}
-
-
 
 
 def run_agent(state):
@@ -126,7 +131,6 @@ def run_agent(state):
         "input": state["input"],
         "messages": state["messages"],  # Ensure messages are passed along
     }
-
 
 
 def should_continue(state):
