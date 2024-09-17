@@ -5,9 +5,11 @@ from langgraph.graph import StateGraph
 from langsmith import traceable
 
 from app.schemas.agent_state import AgentState
-from app.services.chains.stock_generation_chain import (execute_tools,
-                                                        run_agent,
-                                                        should_continue)
+from app.services.chains.stock_generation_chain import (
+    execute_tools,
+    run_agent,
+    should_continue,
+)
 from app.services.tools.stock_tools import tools
 
 logging.basicConfig(level=logging.INFO)
