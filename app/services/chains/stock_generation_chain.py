@@ -6,8 +6,8 @@ from langchain_core.prompts import PromptTemplate
 from langgraph.constants import END
 from langgraph.graph import StateGraph
 from langgraph.prebuilt import ToolExecutor, ToolInvocation
-from langgraph.prebuilt.chat_agent_executor import AgentState
 
+from app.schemas.agent_state import AgentState
 from app.services.tools.stock_tools import tools
 
 logging.basicConfig(level=logging.INFO)
@@ -104,6 +104,8 @@ def execute_tools(state):
 
 
 def run_agent(state):
+    print("------run_agent--------")
+
     if "intermediate_steps" not in state:
         state["intermediate_steps"] = []
     if "agent_scratchpad" not in state:
