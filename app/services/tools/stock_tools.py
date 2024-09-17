@@ -4,6 +4,7 @@ from langchain_core.tools import tool
 
 from app.core.config import settings
 
+
 @tool
 def call_duck_search(query: str) -> str:
     """
@@ -18,6 +19,7 @@ def call_duck_search(query: str) -> str:
     search = DuckDuckGoSearchRun()
     response = search.run(query)
     return response
+
 
 @tool
 def call_get_stock_price(ticker: str) -> str:
@@ -38,6 +40,7 @@ def call_get_stock_price(ticker: str) -> str:
     except requests.RequestException as e:
         return f"Error fetching stock price: {str(e)}"
 
+
 @tool
 def call_get_financial_statements(ticker: str) -> str:
     """
@@ -57,6 +60,7 @@ def call_get_financial_statements(ticker: str) -> str:
     except requests.RequestException as e:
         return f"Error fetching financial statements: {str(e)}"
 
+
 @tool
 def call_get_recent_stock_news(company_name: str) -> str:
     """
@@ -75,6 +79,7 @@ def call_get_recent_stock_news(company_name: str) -> str:
         return response.text
     except requests.RequestException as e:
         return f"Error fetching recent news: {str(e)}"
+
 
 tools = [
     call_duck_search,
