@@ -1,6 +1,15 @@
-version: '3'
+version: '3.10'
 
 services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ./models:/root/.ollama/models
+    environment:
+      - OLLAMA_LIBRARY=/root/.ollama/models
   app:
     build: .
     ports:

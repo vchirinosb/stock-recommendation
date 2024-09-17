@@ -12,6 +12,10 @@ class Settings(BaseSettings):
     """
 
     base_url: str = Field(..., description="URL base de la API")
+    langchain_tracing_v2: bool = Field(..., description="")
+    langchain_endpoint: str = Field(..., description="")
+    langchain_api_key: str = Field(..., description="")
+    langchain_project: str = Field(..., description="")
 
     class Config:
         env_file = ".env"
