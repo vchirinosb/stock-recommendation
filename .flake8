@@ -1,0 +1,14 @@
+[flake8]
+ignore =
+    W504
+exclude =
+    .git,
+    __pycache__,
+    docs/source/conf.py,
+    old,
+    build,
+    dist,
+    apps.py,
+    migrations,
+    env
+max-line-length = 80
